@@ -15,11 +15,11 @@ export const TodoFilter: React.FC<Props> = ({
     changeStatus(event.target.value as CompletedStatus);
   }
 
-  function handleSerchInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleSearchInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     changeQuery(event.target.value);
   }
 
-  function handleSearchInputChange() {
+  function handleClearQuery() {
     changeQuery('');
   }
 
@@ -42,7 +42,7 @@ export const TodoFilter: React.FC<Props> = ({
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={handleSerchInputChange}
+          onChange={handleSearchInputChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -55,10 +55,9 @@ export const TodoFilter: React.FC<Props> = ({
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={handleSearchInputChange}
+              onClick={handleClearQuery}
             />
           )}
-          ``
         </span>
       </p>
     </form>
