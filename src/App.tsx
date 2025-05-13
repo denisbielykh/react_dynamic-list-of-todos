@@ -1,15 +1,15 @@
 /* eslint-disable max-len */
 //#region imports
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
+import { Todo } from './types/Todo';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
-import { Loader } from './components/Loader';
-import { Todo } from './types/Todo';
 import { getTodos } from './api';
+import { Loader } from './components/Loader';
 import { CompletedStatus } from './types/Status';
 //#endregion
 
@@ -17,27 +17,24 @@ export const App: React.FC = () => {
   //#region states
   const [loading, setLoading] = useState(false);
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [status, setStatus] = useState(CompletedStatus.all);
+  const [completedStatus, setCompletedStatus] = useState(CompletedStatus.all);
   const [query, setQuery] = useState('');
-  const [preparedTodos, setPreparedTodos] = useState<Todo[]>([]);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   //#endregion
 
   useEffect(() => {
     setLoading(true);
 
-    getTodos(status)
+    getTodos(completedStatus)
       .then(setTodos)
       .finally(() => {
         setLoading(false);
       });
-  }, [status]);
+  }, [completedStatus]);
 
-  useEffect(() => {
-    setPreparedTodos(
-      todos.filter(todo =>
-        todo.title.toLowerCase().includes(query.toLowerCase()),
-      ),
+  const filteredTodos = useMemo((): Todo[] => {
+    return todos.filter(todo =>
+      todo.title.toLowerCase().includes(query.toLowerCase()),
     );
   }, [query, todos]);
 
@@ -52,14 +49,14 @@ export const App: React.FC = () => {
               <TodoFilter
                 query={query}
                 changeQuery={setQuery}
-                changeStatus={setStatus}
+                changeStatus={setCompletedStatus}
               />
             </div>
 
             <div className="block">
               {loading && <Loader />}
               <TodoList
-                todos={preparedTodos}
+                todos={filteredTodos}
                 changeSelectedTodo={setSelectedTodo}
                 selectedTodoId={selectedTodo?.id || null}
               />

@@ -1,11 +1,10 @@
 import React from 'react';
-import { Todo } from '../../types/Todo';
+import { Todo, TodoId } from '../../types/Todo';
 import classNames from 'classnames';
-import { UserId } from '../../types/User';
 
 type Props = {
   todos: Todo[];
-  selectedTodoId: UserId | null;
+  selectedTodoId: TodoId | null;
   changeSelectedTodo: (todo: Todo) => void;
 };
 
@@ -58,10 +57,7 @@ export const TodoList: React.FC<Props> = React.memo(
                   >
                     <span className="icon">
                       <i
-                        className={classNames('far', {
-                          'fa-eye': selectedTodoId !== todo.id,
-                          'fa-eye-slash': selectedTodoId === todo.id,
-                        })}
+                        className={`far ${selectedTodoId === todo.id ? 'fa-eye-slash' : 'fa-eye'}`}
                       />
                     </span>
                   </button>

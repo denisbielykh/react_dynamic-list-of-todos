@@ -6,7 +6,7 @@ import { Todo } from '../../types/Todo';
 
 type Props = {
   todo: Todo;
-  changeSelectedTodo: (val: null) => void;
+  changeSelectedTodo: (value: null) => void;
 };
 
 export const TodoModal: React.FC<Props> = React.memo(
@@ -23,7 +23,7 @@ export const TodoModal: React.FC<Props> = React.memo(
         .finally(() => {
           setLoading(false);
         });
-    }, [userId]);
+    }, []);
 
     return (
       <div className="modal is-active" data-cy="modal">
@@ -58,10 +58,9 @@ export const TodoModal: React.FC<Props> = React.memo(
               </p>
 
               <p className="block" data-cy="modal-user">
-                {completed && (
+                {completed ? (
                   <strong className="has-text-success">Done</strong>
-                )}
-                {!completed && (
+                ) : (
                   <strong className="has-text-danger">Planned</strong>
                 )}
 
